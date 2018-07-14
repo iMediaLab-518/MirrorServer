@@ -4,6 +4,7 @@ import pickle
 import cv2
 import time
 import configparser
+import face_recognition
 
 config = configparser.ConfigParser()
 config.read("config.ini")
@@ -12,6 +13,7 @@ dataset_dir = config['global']['dataset']
 model_path = config['global']['modelpath']
 pic_filename = 'unknown.png'
 
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 def predict(X_img_path, knn_clf=None, model_path=None, distance_threshold=0.6):
     if not os.path.isfile(X_img_path) or os.path.splitext(X_img_path)[1][1:] not in ALLOWED_EXTENSIONS:

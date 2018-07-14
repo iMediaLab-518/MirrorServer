@@ -11,6 +11,8 @@ import configparser
 import time
 
 from sklearn import neighbors
+from utils import image_files_in_folder
+import face_recognition
 
 config = configparser.ConfigParser()
 config.read("config.ini")
@@ -19,7 +21,7 @@ cascade_path = config['global']['cascade']
 dataset_dir = config['global']['dataset']
 train_dir = os.path.join(dataset_dir, 'train')
 model_path = config['global']['modelpath']
-VIDEO_TIME = 30  # time of audio
+VIDEO_TIME = 20  # time of audio
 
 
 def handle_pic(orig):
@@ -68,7 +70,7 @@ def train(train_dir, model_save_path=None, n_neighbors=None, knn_algo='ball_tree
 
 
 def register(person):
-    person_dir = '{dataset_dir}/{person}'.format(dataset_dir=dataset_dir, person=person)
+    person_dir = '{train_dir}/{person}'.format(train_dir=train_dir, person=person)
     if not os.path.exists(person_dir):
         os.mkdir(person_dir)
 
