@@ -20,7 +20,7 @@ config.read("config.ini")
 cascade_path = config['global']['cascade']
 dataset_dir = config['global']['dataset']
 train_dir = os.path.join(dataset_dir, 'train')
-model_path = config['global']['modelpath']
+model_dir = config['global']['model']
 VIDEO_TIME = 20  # time of audio
 
 
@@ -30,38 +30,28 @@ def handle_pic(orig):
     return orig
 
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-
-
-def train(train_dir, model_save_path=None, n_neighbors=None, knn_algo='ball_tree', verbose=False):
+def train(train_dir, model_save_path=None, n_neighbors=None, knn_algo='ball_tree'):
     X = []
     y = []
 
-    for class_dir in os.listdir(train_dir):
-        if not os.path.isdir(os.path.join(train_dir, class_dir)):
-            continue
+    for img_path in image_files_in_folder(train_dir):
+        image = face_recognition.load_image_file(img_path)
+        face_bounding_boxes = face_recognition.face_locations(image)
 
-        for img_path in image_files_in_folder(os.path.join(train_dir, class_dir)):
-            image = face_recognition.load_image_file(img_path)
-            face_bounding_boxes = face_recognition.face_locations(image)
-
-            if len(face_bounding_boxes) != 1:
-                if verbose:
-                    print("Image {} not suitable for training: {}".format(img_path, "Didn't find a face" if len(
-                        face_bounding_boxes) < 1 else "Found more than one face"))
-            else:
-                X.append(face_recognition.face_encodings(image, known_face_locations=face_bounding_boxes)[0])
-                y.append(class_dir)
+        if len(face_bounding_boxes) == 1:
+            X.append(face_recognition.face_encodings(image, known_face_locations=face_bounding_boxes)[0])
+            y.append(train_dir.split('/')[1])
 
     if n_neighbors is None:
         n_neighbors = int(round(math.sqrt(len(X))))
-        if verbose:
-            print("Chose n_neighbors automatically:", n_neighbors)
 
     knn_clf = neighbors.KNeighborsClassifier(n_neighbors=n_neighbors, algorithm=knn_algo, weights='distance')
     knn_clf.fit(X, y)
 
     # Save the trained KNN classifier
+    if not os.path.exists(model_dir):
+        os.mkdir(model_dir)
+
     if model_save_path is not None:
         with open(model_save_path, 'wb') as f:
             pickle.dump(knn_clf, f)
@@ -76,12 +66,12 @@ def register(person):
 
     total = len(os.listdir(person_dir))  # pics number existed
 
-    start=time.time()
+    start = time.time()
     detector = cv2.CascadeClassifier(cascade_path)
     vs = VideoStream(src=0).start()
 
-    print("Initlize the camera with {} s".format(time.time()-start))
-    start=time.time()
+    print("Initlize the camera with {} s".format(time.time() - start))
+    start = time.time()
 
     while True:
         if time.time() - start >= VIDEO_TIME:
@@ -122,10 +112,10 @@ def register(person):
     if not os.path.exists(train_dir):
         os.mkdir(train_dir)
 
-    start=time.time()
+    start = time.time()
     print("[INFO] Start training the pictures!")
-    train(train_dir, model_save_path=model_path, n_neighbors=2)
-    print("[INFO] Train complete with {} s".format(time.time()-start))
+    train(person_dir, model_save_path=os.path.join(model_dir, "{}.clf".format(person)), n_neighbors=2)
+    print("[INFO] Train complete with {} s".format(time.time() - start))
 
     cv2.destroyAllWindows()
     vs.stop()

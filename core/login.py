@@ -10,7 +10,8 @@ config = configparser.ConfigParser()
 config.read("config.ini")
 
 dataset_dir = config['global']['dataset']
-model_path = config['global']['modelpath']
+model_dir = config['global']['model']
+
 pic_filename = 'unknown.png'
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -74,14 +75,18 @@ def recognize():
     print("Take a photo with {} s".format(time.time() - start))
     start = time.time()
 
-    predictions = predict(pic_path, model_path=model_path)
-    print("Predict with {} s".format(time.time() - start))
-    if len(predictions) == 0:
-        print("Can't recognize the face!")
-    elif len(predictions) > 1:
-        print("Please others wait a moment!")
-    else:
-        return predictions[0]
+    res = "unknown"
+    for model in os.listdir(model_dir):
+        prediction = predict(pic_path, model_path=os.path.join(model_dir, model))[0]
+        if prediction != "unknown":
+            res = prediction
+            break
+    # if len(predictions) == 0:
+    #     print("Can't recognize the face!")
+    # elif len(predictions) > 1:
+    #     print("Please others wait a moment!")
+    # else:
+    return res
 
 
 def login():
