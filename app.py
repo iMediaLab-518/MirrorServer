@@ -1,19 +1,11 @@
 from flask import Flask
-from core.register import register
-from core.login import login
+from route.auth_route import auth
+from route.extension_route import extension
 
 app = Flask(__name__)
 
-
-@app.route('/register/<person>')
-def Register(person):
-    register(person)
-
-
-@app.route('/login')
-def Login():
-    return login()
-
+app.register_blueprint(auth)
+app.register_blueprint(extension)
 
 if __name__ == '__main__':
     app.run(debug=True)
