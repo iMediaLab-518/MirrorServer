@@ -13,6 +13,7 @@ def get_temperature():
     time.sleep(0.02)
     GPIO.output(channel, GPIO.HIGH)
     GPIO.setup(channel, GPIO.IN)
+
     while GPIO.input(channel) == GPIO.LOW:
         continue
     while GPIO.input(channel) == GPIO.HIGH:

@@ -8,9 +8,27 @@ extension = Blueprint('extension', __name__)
 
 @extension.route('/humidity')
 def humidity():
-    return get_humidity()
+    try:
+        res = get_humidity()
+        return json.dumps({
+            "status": 100,
+            "out": res
+        })
+    except:
+        return json.dumps({
+            "status": 204
+        })
 
 
 @extension.route('/temperature')
 def temperature():
-    return get_temperature()
+    try:
+        res = get_temperature()
+        return json.dumps({
+            "status": 100,
+            "out": res
+        })
+    except:
+        return json.dumps({
+            "status": 203
+        })
