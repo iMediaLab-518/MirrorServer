@@ -3,11 +3,9 @@ import pickle
 
 import cv2
 import time
-import configparser
 import face_recognition
 
-config = configparser.ConfigParser()
-config.read("config.ini")
+from utils.config import config
 
 dataset_dir = config['global']['dataset']
 model_dir = config['global']['model']

@@ -7,15 +7,12 @@ import time
 import cv2
 import os
 import os.path
-import configparser
 import time
 
 from sklearn import neighbors
 from utils import image_files_in_folder
 import face_recognition
-
-config = configparser.ConfigParser()
-config.read("config.ini")
+from utils.config import config
 
 cascade_path = config['global']['cascade']
 dataset_dir = config['global']['dataset']
