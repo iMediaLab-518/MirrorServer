@@ -3,11 +3,9 @@ import pickle
 
 import cv2
 import time
-import configparser
 import face_recognition
 
-config = configparser.ConfigParser()
-config.read("config.ini")
+from utils.config import config
 
 dataset_dir = config['global']['dataset']
 model_dir = config['global']['model']
@@ -21,7 +19,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 # 图片扩展名
 
-def predict(X_img_path, knn_clf=None, model_path=None, distance_threshold=0.4):
+def single_predict(X_img_path, knn_clf=None, model_path=None, distance_threshold=0.4):
     """
     内存足够则直接将所有模型加载到内存中，识别每一个图片的时候直接从内存中调用模型，没有IO损耗。
     内存不足够这只能给出model_path增加IO操作减少内存损耗
@@ -57,8 +55,37 @@ def predict(X_img_path, knn_clf=None, model_path=None, distance_threshold=0.4):
     are_matches = [closest_distances[0][i][0] <= distance_threshold for i in
                    range(len(X_face_locations))]  # 提取所有计算距离小于distance_threshold的值得脸
 
-    return [pred if rec else "unknown" for pred, rec in
-            zip(knn_clf.predict(faces_encodings), are_matches)]  # 如果识别成功则返回识别出的名称，否则返回unknown
+    return [True if rec else "unknown" for rec in
+            are_matches]  # 如果识别成功则返回识别出的名称，否则返回unknown
+
+
+def predict(X_img_path, distance_threshold=0.4):
+    """
+
+    :param X_img_path: 要预测的图片路径
+    :param distance_threshold: 要识别的KNN算法中的最短距离，越小越严格
+    :return:
+    """
+    X_img = face_recognition.load_image_file(X_img_path)
+    X_face_locations = face_recognition.face_locations(X_img)  # 加载每一张脸的位置
+    # 检测脸的位置和对脸进行编码是耗时最长的
+
+    if len(X_face_locations) == 0:
+        return []
+    faces_encodings = face_recognition.face_encodings(X_img, known_face_locations=X_face_locations)
+
+    for model in os.listdir(model_dir):
+        # 使用每一个模型对图片进行检测
+        model_path = os.path.join(model_dir, model)
+        name = model.split('.')[0]
+        with open(model_path, 'rb') as f:
+            clf = pickle.load(f)
+            closest_distances = clf.kneighbors(faces_encodings, n_neighbors=1)
+            are_match = closest_distances[0][0][0] <= distance_threshold
+
+            if are_match:
+                return name
+    return "unknown"
 
 
 def take_a_photo():
@@ -83,39 +110,11 @@ def take_a_photo():
     return pic_path
 
 
-def recognize():
-    """
-
-    :return: 人脸对应的用户名，默认返回unknown
-    """
-    # TODO: 人脸识别
-    start = time.time()
-    pic_path = take_a_photo()
-
-    print("Take a photo with {} s".format(time.time() - start))
-    start = time.time()
-
-    res = "unknown"
-
-    # 模型都存在model_dir这个文件件下，然后调用每一个模型对图片进行预测，只要有一个预测成功则将结果值标记为这个
-    # TODO: 多线程优化
-    for model in os.listdir(model_dir):
-        prediction = predict(pic_path, model_path=os.path.join(model_dir, model))[0]
-        if prediction != "unknown":
-            res = prediction
-            break
-    # if len(predictions) == 0:
-    #     print("Can't recognize the face!")
-    # elif len(predictions) > 1:
-    #     print("Please others wait a moment!")
-    # else:
-    return res
-
-
 def login():
     """
 
     :return: 用户名
     """
-    username = recognize()
+    pic_path = take_a_photo()
+    username = predict(pic_path)
     return username
