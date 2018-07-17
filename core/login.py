@@ -55,8 +55,8 @@ def predict(X_img_path, knn_clf=None, model_path=None, distance_threshold=0.4):
     are_matches = [closest_distances[0][i][0] <= distance_threshold for i in
                    range(len(X_face_locations))]  # 提取所有计算距离小于distance_threshold的值得脸
 
-    return [pred if rec else "unknown" for pred, rec in
-            zip(knn_clf.predict(faces_encodings), are_matches)]  # 如果识别成功则返回识别出的名称，否则返回unknown
+    return [True if rec else "unknown" for rec in
+            are_matches]  # 如果识别成功则返回识别出的名称，否则返回unknown
 
 
 def take_a_photo():
@@ -100,7 +100,7 @@ def recognize():
     for model in os.listdir(model_dir):
         prediction = predict(pic_path, model_path=os.path.join(model_dir, model))[0]
         if prediction != "unknown":
-            res = prediction
+            res = model.split('.clf')[0]
             break
     # if len(predictions) == 0:
     #     print("Can't recognize the face!")
