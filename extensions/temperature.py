@@ -3,6 +3,11 @@ import time
 
 
 def get_temperature():
+    """
+    调用树莓派上的插好的接口来获取温度
+    TODO: 将接口写在配置中，去除硬编码
+    :return: 温度
+    """
     channel = 12  # GPIO12
     data = []
     j = 0
@@ -47,9 +52,9 @@ def get_temperature():
         humidity += humidity_bit[i] * 2 ** (7 - i)
         humidity_point += humidity_point_bit[i] * 2 ** (7 - i)
         temperature += temperature_bit[i] * 2 ** (7 - i)
-    temperature_point += temperature_point_bit[i] * 2 ** (7 - i)
+        temperature_point += temperature_point_bit[i] * 2 ** (7 - i)
+        check += check_bit[i] * 2 ** (7 - i)
 
-    check += check_bit[i] * 2 ** (7 - i)
     tmp = humidity + humidity_point + temperature + temperature_point
 
     GPIO.cleanup()
