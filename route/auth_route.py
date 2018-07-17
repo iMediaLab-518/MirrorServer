@@ -20,8 +20,6 @@ def Register(username):
         })
 
 
-
-
 @auth.route('/login')
 def Login():
     try:

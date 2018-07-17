@@ -21,16 +21,33 @@ cascade_path = config['global']['cascade']
 dataset_dir = config['global']['dataset']
 train_dir = os.path.join(dataset_dir, 'train')
 model_dir = config['global']['model']
-VIDEO_TIME = 20  # time of audio
+# 读取所有配置
+
+VIDEO_TIME = 20  # VIDEO_TIME是之后的语音提示语的长度，会进行这么长时间的面部录入
 
 
 def handle_pic(orig):
+    """
+    处理图片，修改图片分辨率并灰度化
+
+    :param orig: 图片类
+    :return: 处理之后的图片
+    """
     orig = cv2.cvtColor(orig, cv2.COLOR_BGR2GRAY)
     orig = cv2.resize(orig, (320, 240), interpolation=cv2.INTER_AREA)
     return orig
 
 
 def train(train_dir, model_save_path=None, n_neighbors=None, knn_algo='ball_tree'):
+    """
+    对train_dir文件夹下的所有图片进行训练，文件夹名称就是这个模型的名称
+
+    :param train_dir: 需要训练的图片的文件夹
+    :param model_save_path: 模型保存的地址
+    :param n_neighbors: kNN的k
+    :param knn_algo: 默认kNN算法
+    :return: 训练模型
+    """
     X = []
     y = []
 
@@ -48,23 +65,28 @@ def train(train_dir, model_save_path=None, n_neighbors=None, knn_algo='ball_tree
     knn_clf = neighbors.KNeighborsClassifier(n_neighbors=n_neighbors, algorithm=knn_algo, weights='distance')
     knn_clf.fit(X, y)
 
-    # Save the trained KNN classifier
     if not os.path.exists(model_dir):
         os.mkdir(model_dir)
 
     if model_save_path is not None:
         with open(model_save_path, 'wb') as f:
             pickle.dump(knn_clf, f)
+            # 使用pickle持久化模型
 
     return knn_clf
 
 
 def register(person):
+    """
+    开始录入人脸，保存在person文件夹下
+    :param person: 人物名称
+    """
     person_dir = '{train_dir}/{person}'.format(train_dir=train_dir, person=person)
     if not os.path.exists(person_dir):
         os.mkdir(person_dir)
+    # 图片保存的路径
 
-    total = len(os.listdir(person_dir))  # pics number existed
+    total = len(os.listdir(person_dir))
 
     start = time.time()
     detector = cv2.CascadeClassifier(cascade_path)
@@ -83,6 +105,7 @@ def register(person):
         rects = detector.detectMultiScale(
             cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY), scaleFactor=1.1,
             minNeighbors=5, minSize=(30, 30))
+        # 拍摄的图片的人脸数量
 
         # for (x, y, w, h) in rects:
         #     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)

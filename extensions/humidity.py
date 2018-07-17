@@ -3,6 +3,11 @@ import time
 
 
 def get_humidity():
+    """
+    调用树莓派上的插好的接口来获取湿度
+    TODO: 将接口写在配置中，去除硬编码
+    :return: 湿度
+    """
     channel = 12  # GPIO12
     data = []
     j = 0
