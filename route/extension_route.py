@@ -2,6 +2,8 @@ from flask import Blueprint
 from extensions.humidity import get_humidity
 from extensions.temperature import get_temperature
 from extensions.heartrate import get_heartrate
+from extensions.weight import get_weight
+
 import json
 
 extension = Blueprint('extension', __name__)
@@ -46,4 +48,18 @@ def heartrate():
     except:
         return json.dumps({
             "status": 206
+        })
+
+
+@extension.route('/weight')
+def weight():
+    try:
+        res = get_weight()
+        return json.dumps({
+            'status': 100,
+            "out": res
+        })
+    except:
+        return json.dumps({
+            "status": 205
         })
