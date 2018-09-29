@@ -16,6 +16,7 @@
 | |____heartrate.py     获取心率
 | |____humidity.py      获取湿度
 | |____temperature.py   获取温度
+| |____traveladvice.py  出行建议
 | |____weight.py        获取体重
 |____route      服务器路由文件夹
 | |____auth_route.py    身份认证路由 / 登录注册
