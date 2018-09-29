@@ -15,6 +15,7 @@
 | |____weight_utils 获取体重要用到的代码（python2
 | |____heartrate.py     获取心率
 | |____humidity.py      获取湿度
+| |____news.py          获取新闻
 | |____temperature.py   获取温度
 | |____traveladvice.py  出行建议
 | |____weight.py        获取体重

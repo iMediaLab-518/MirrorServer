@@ -4,6 +4,7 @@ from extensions.temperature import get_temperature
 from extensions.heartrate import get_heartrate
 from extensions.weight import get_weight
 from extensions.traveladvice import get_travel_advice
+from extensions.news import get_news
 import random
 
 import json
@@ -87,3 +88,17 @@ def traveladvice():
         "status": 100,
         "out": res
     }, ensure_ascii=False)
+
+
+@extension.route('/news')
+def news():
+    try:
+        res = get_news()
+        return json.dumps({
+            "status": 100,
+            "out": res
+        }, ensure_ascii=False)
+    except:
+        return json.dumps({
+            "status": 209
+        })
