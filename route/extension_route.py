@@ -5,6 +5,7 @@ from extensions.heartrate import get_heartrate
 from extensions.weight import get_weight
 from extensions.traveladvice import get_travel_advice
 from extensions.news import get_news
+from extensions.pm25 import get_pm25
 import random
 
 import json
@@ -101,4 +102,18 @@ def news():
     except:
         return json.dumps({
             "status": 209
+        })
+
+
+@extension.route('/pm25')
+def pm25():
+    try:
+        res = get_pm25()
+        return json.dumps({
+            "status": 100,
+            "out": res
+        })
+    except:
+        return json.dump({
+            "status": 210
         })
