@@ -5,7 +5,7 @@ from .weather_utils.match import match
 from .weather_utils.save import save
 
 
-@cache('cache/weather.pkl', 1, 0)
+@cache('cache/wind.pkl', 1, 0)
 def get_wind():
     raw_data = get_raw_data()
     data = match(raw_data)
