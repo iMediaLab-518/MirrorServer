@@ -1,2 +1,6 @@
 def get_humidity():
-    return 1
+    pass
+
+
+if __name__ == '__main__':
+    get_humidity()
