@@ -1,12 +1,13 @@
-import requests
+from utils.cache import cache
 
+from .weather_utils.fetch import get_raw_data
+from .weather_utils.match import match
+from .weather_utils.save import save
+
+
+@cache('cache/pm25.pkl', 1, 0)
 def get_pm25():
-    headers = {
-        'Accept': 'application/json, text/javascript, */*; q=0.01',
-    }
-
-    # req = requests.get("http://datacenter.mep.gov.cn/websjzx/ajaxApi/index/getAqiInfo.vm?regionCode=330100",
-    #                    headers=headers)
-    #
-    # pm25 = req.json()["data"]["AQI"]
-    return 1
+    raw_data = get_raw_data()
+    data = match(raw_data)
+    save(data)
+    return data['aqi_pm25']
