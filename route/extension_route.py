@@ -1,4 +1,5 @@
 from flask import Blueprint, request
+
 from extensions.humidity import get_humidity
 from extensions.temperature import get_temperature
 from extensions.heartrate import get_heartrate
@@ -8,7 +9,7 @@ from extensions.news import get_news
 from extensions.pm25 import get_pm25
 import random
 
-import json
+from utils.resp import responseto
 
 extension = Blueprint('extension', __name__)
 
@@ -17,12 +18,12 @@ extension = Blueprint('extension', __name__)
 def humidity():
     try:
         res = get_humidity()
-        return json.dumps({
+        return responseto({
             "status": 100,
             "out": res
         })
     except:
-        return json.dumps({
+        return responseto({
             "status": 204
         })
 
@@ -31,12 +32,12 @@ def humidity():
 def temperature():
     try:
         res = get_temperature()
-        return json.dumps({
+        return responseto({
             "status": 100,
             "out": res
         })
     except:
-        return json.dumps({
+        return responseto({
             "status": 203
         })
 
@@ -45,12 +46,12 @@ def temperature():
 def heartrate():
     try:
         res = get_heartrate()
-        return json.dumps({
+        return responseto({
             "status": 100,
             "out": res
         })
     except:
-        return json.dumps({
+        return responseto({
             "status": 206
         })
 
@@ -59,12 +60,12 @@ def heartrate():
 def weight():
     try:
         res = get_weight()
-        return json.dumps({
+        return responseto({
             'status': 100,
             "out": res
         })
     except:
-        return json.dumps({
+        return responseto({
             "status": 205
         })
 
@@ -80,27 +81,27 @@ def traveladvice():
         try:
             temperature = int(temperature)
         except:
-            return json.dumps({
+            return responseto({
                 "status": 208
             })
 
     res = get_travel_advice(temperature)
-    return json.dumps({
+    return responseto({
         "status": 100,
         "out": res
-    }, ensure_ascii=False)
+    })
 
 
 @extension.route('/news')
 def news():
     try:
         res = get_news()
-        return json.dumps({
+        return responseto({
             "status": 100,
             "out": res
-        }, ensure_ascii=False)
+        })
     except:
-        return json.dumps({
+        return responseto({
             "status": 209
         })
 
@@ -109,11 +110,11 @@ def news():
 def pm25():
     try:
         res = get_pm25()
-        return json.dumps({
+        return responseto({
             "status": 100,
             "out": res
         })
     except:
-        return json.dump({
+        return responseto({
             "status": 210
         })

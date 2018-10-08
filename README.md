@@ -16,6 +16,7 @@
 | |____heartrate.py     获取心率
 | |____humidity.py      获取湿度
 | |____news.py          获取新闻
+| |____pm25.py          获取PM2.5
 | |____temperature.py   获取温度
 | |____traveladvice.py  出行建议
 | |____weight.py        获取体重
