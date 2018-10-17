@@ -26,6 +26,8 @@ def cache(filepath, h, m):
                         raise CacheExpirationException
                 except:
                     return func(*args, **kwargs)
+            else:
+                return func(*args, **kwargs)
 
         return wrapper
 
