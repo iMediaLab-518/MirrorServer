@@ -24,10 +24,15 @@ def Register(username):
 def Login():
     try:
         username = login()
-        return json.dumps({
-            "status": 100,
-            "out": username
-        })
+        if username != []:
+            return json.dumps({
+                "status": 100,
+                "out": username
+            })
+        else:
+            return json.dumps({
+                "status": 301
+            })
     except:
         return json.dumps({
             "status": 202
