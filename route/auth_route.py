@@ -3,6 +3,7 @@ import json
 from flask import Blueprint
 from core.register import register
 from core.login import login
+from utils.resp import responseto
 
 auth = Blueprint('auth', __name__)
 
@@ -11,11 +12,11 @@ auth = Blueprint('auth', __name__)
 def Register(username):
     try:
         register(username)
-        return json.dumps({
+        return responseto({
             "status": 100
         })
     except:
-        return json.dumps({
+        return responseto({
             "status": 201
         })
 
@@ -25,15 +26,15 @@ def Login():
     try:
         username = login()
         if username != []:
-            return json.dumps({
+            return responseto({
                 "status": 100,
                 "out": username
             })
         else:
-            return json.dumps({
+            return responseto({
                 "status": 301
             })
     except:
-        return json.dumps({
+        return responseto({
             "status": 202
         })
