@@ -28,7 +28,7 @@ def save(weather_data):
     temperature = weather_data['temp']
     wind = ' '.join([weather_data['WD'], weather_data['WS']])
     humidity = weather_data['SD']
-    weather = weather_data['weather']
+    weather = [weather_data['weather'], weather_data['weathercode']]
     pm25 = weather_data['aqi_pm25']
 
     _save_file('cache/temperature.pkl', temperature)
