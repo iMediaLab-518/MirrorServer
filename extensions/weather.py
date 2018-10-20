@@ -10,4 +10,4 @@ def get_weather():
     raw_data = get_raw_data()
     data = match(raw_data)
     save(data)
-    return data['weather']
+    return (data['weather'], data['weathercode'])
