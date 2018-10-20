@@ -1,5 +1,3 @@
-import json
-
 from flask import Blueprint
 from core.register import register
 from core.login import login
@@ -12,13 +10,9 @@ auth = Blueprint('auth', __name__)
 def Register(username):
     try:
         register(username)
-        return responseto({
-            "status": 100
-        })
+        return responseto(100)
     except:
-        return responseto({
-            "status": 201
-        })
+        return responseto(201)
 
 
 @auth.route('/login')
@@ -26,15 +20,8 @@ def Login():
     try:
         username = login()
         if username != []:
-            return responseto({
-                "status": 100,
-                "out": username
-            })
+            return responseto(100, username)
         else:
-            return responseto({
-                "status": 301
-            })
+            return responseto(301)
     except:
-        return responseto({
-            "status": 202
-        })
+        return responseto(302)

@@ -20,56 +20,37 @@ extension = Blueprint('extension', __name__)
 def humidity():
     try:
         res = get_humidity()
-        return responseto({
-            "status": 100,
-            "out": res
-        })
+        return responseto(100, res)
     except:
-        return responseto({
-            "status": 204
-        })
+
+        return responseto(204)
 
 
 @extension.route('/temperature')
 def temperature():
     try:
         res = get_temperature()
-        return responseto({
-            "status": 100,
-            "out": res
-        })
+        return responseto(100, res)
     except:
-        return responseto({
-            "status": 203
-        })
+        return responseto(203)
 
 
 @extension.route('/heartrate')
 def heartrate():
     try:
         res = get_heartrate()
-        return responseto({
-            "status": 100,
-            "out": res
-        })
+        return responseto(100, res)
     except:
-        return responseto({
-            "status": 206
-        })
+        return responseto(206)
 
 
 @extension.route('/weight')
 def weight():
     try:
         res = get_weight()
-        return responseto({
-            'status': 100,
-            "out": res
-        })
+        return responseto(100, res)
     except:
-        return responseto({
-            "status": 205
-        })
+        return responseto(205)
 
 
 @extension.route('/traveladvice')
@@ -83,68 +64,43 @@ def traveladvice():
         try:
             temperature = int(temperature)
         except:
-            return responseto({
-                "status": 208
-            })
+            return responseto(208)
 
     res = get_travel_advice(temperature)
-    return responseto({
-        "status": 100,
-        "out": res
-    })
+    return responseto(100, res)
 
 
 @extension.route('/news')
 def news():
     try:
         res = get_news()
-        return responseto({
-            "status": 100,
-            "out": res
-        })
+        return responseto(100, res)
     except:
-        return responseto({
-            "status": 209
-        })
+        return responseto(209)
 
 
 @extension.route('/pm25')
 def pm25():
     try:
         res = get_pm25()
-        return responseto({
-            "status": 100,
-            "out": res
-        })
+        return responseto(100, res)
     except:
-        return responseto({
-            "status": 210
-        })
+        return responseto(210)
 
 
 @extension.route('/weather')
 def weather():
     try:
         res = get_weather()
-        return responseto({
-            "status": 100,
-            "out": res
-        })
+        return responseto(100, res)
     except:
-        return responseto({
-            "status": 211
-        })
+        return responseto(211)
 
 
 @extension.route('/wind')
 def wind():
     try:
         res = get_wind()
-        return responseto({
-            "status": 100,
-            "out": res
-        })
+        return responseto(100, res)
     except:
-        return responseto({
-            "status": 212
-        })
+        return responseto(212)
