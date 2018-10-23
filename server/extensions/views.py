@@ -1,22 +1,22 @@
 from flask import Blueprint, request
 
-from extensions.humidity import get_humidity
-from extensions.temperature import get_temperature
-from extensions.heartrate import get_heartrate
-from extensions.weather import get_weather
-from extensions.weight import get_weight
-from extensions.traveladvice import get_travel_advice
-from extensions.news import get_news
-from extensions.pm25 import get_pm25
+from ..controller.humidity import get_humidity
+from ..controller.temperature import get_temperature
+from ..controller.heartrate import get_heartrate
+from ..controller.weather import get_weather
+from ..controller.weight import get_weight
+from ..controller.traveladvice import get_travel_advice
+from ..controller.news import get_news
+from ..controller.pm25 import get_pm25
 import random
 
-from extensions.wind import get_wind
-from utils.resp import responseto
+from ..controller.wind import get_wind
+from ..util import responseto
 
-extension = Blueprint('extension', __name__)
+extension_bp = Blueprint('extension', __name__)
 
 
-@extension.route('/humidity')
+@extension_bp.route('/humidity')
 def humidity():
     try:
         res = get_humidity()
@@ -26,7 +26,7 @@ def humidity():
         return responseto(204)
 
 
-@extension.route('/temperature')
+@extension_bp.route('/temperature')
 def temperature():
     try:
         res = get_temperature()
@@ -35,7 +35,7 @@ def temperature():
         return responseto(203)
 
 
-@extension.route('/heartrate')
+@extension_bp.route('/heartrate')
 def heartrate():
     try:
         res = get_heartrate()
@@ -47,7 +47,7 @@ def heartrate():
         return responseto(206)
 
 
-@extension.route('/weight')
+@extension_bp.route('/weight')
 def weight():
     try:
         res = get_weight()
@@ -56,7 +56,7 @@ def weight():
         return responseto(205)
 
 
-@extension.route('/traveladvice')
+@extension_bp.route('/traveladvice')
 def traveladvice():
     temperature = request.args.get('t')
 
@@ -73,7 +73,7 @@ def traveladvice():
     return responseto(100, res)
 
 
-@extension.route('/news')
+@extension_bp.route('/news')
 def news():
     try:
         res = get_news()
@@ -82,7 +82,7 @@ def news():
         return responseto(209)
 
 
-@extension.route('/pm25')
+@extension_bp.route('/pm25')
 def pm25():
     try:
         res = get_pm25()
@@ -91,7 +91,7 @@ def pm25():
         return responseto(210)
 
 
-@extension.route('/weather')
+@extension_bp.route('/weather')
 def weather():
     try:
         res = get_weather()
@@ -100,7 +100,7 @@ def weather():
         return responseto(211)
 
 
-@extension.route('/wind')
+@extension_bp.route('/wind')
 def wind():
     try:
         res = get_wind()

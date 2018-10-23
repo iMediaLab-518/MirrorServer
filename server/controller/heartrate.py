@@ -1,5 +1,5 @@
 import os
-from utils.config import config
+from ..util import config
 
 password = config['global']['password']
 heart_filepath = config['global']['heart_filepath']

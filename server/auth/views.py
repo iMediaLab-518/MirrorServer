@@ -1,12 +1,13 @@
+from ..controller.register import register
+from ..controller.login import login
+from ..util import responseto
+
 from flask import Blueprint
-from core.register import register
-from core.login import login
-from utils.resp import responseto
 
-auth = Blueprint('auth', __name__)
+auth_bp = Blueprint('auth', __name__)
 
 
-@auth.route('/register/<username>')
+@auth_bp.route('/register/<username>')
 def Register(username):
     try:
         register(username)
@@ -15,7 +16,7 @@ def Register(username):
         return responseto(201)
 
 
-@auth.route('/login')
+@auth_bp.route('/login')
 def Login():
     try:
         username = login()

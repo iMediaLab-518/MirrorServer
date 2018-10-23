@@ -1,5 +1,6 @@
 import math
 import pickle
+import re
 
 from imutils.video import VideoStream
 import imutils
@@ -9,9 +10,8 @@ import os.path
 import time
 
 from sklearn import neighbors
-from utils import image_files_in_folder
 import face_recognition
-from utils.config import config
+from ..util import config
 
 cascade_path = config['global']['cascade']
 dataset_dir = config['global']['dataset']
@@ -19,7 +19,11 @@ train_dir = os.path.join(dataset_dir, 'train')
 model_dir = config['global']['model']
 # 读取所有配置
 
-VIDEO_TIME = 20  # VIDEO_TIME是之后的语音提示语的长度，会进行这么长时间的面部录入
+VIDEO_TIME = 10  # VIDEO_TIME是之后的语音提示语的长度，会进行这么长时间的面部录入
+
+
+def image_files_in_folder(folder):
+    return [os.path.join(folder, f) for f in os.listdir(folder) if re.match(r'.*\.(jpg|jpeg|png)', f, flags=re.I)]
 
 
 def handle_pic(orig):

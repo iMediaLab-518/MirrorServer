@@ -1,5 +1,5 @@
 import os
-from utils.config import config
+from ..util import config
 
 
 def get_weight():

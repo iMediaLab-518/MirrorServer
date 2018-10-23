@@ -1,11 +1,13 @@
+
+from ..util import responseto
+from ..controller.heartrate import band_init, reset_bluetooth
+
 from flask import Blueprint
-from utils.resp import responseto
-from extensions.heartrate import band_init, reset_bluetooth
 
-util = Blueprint('util', __name__)
+bluetooth_bp = Blueprint('bluetooth', __name__)
 
 
-@util.route('/util/initband')
+@bluetooth_bp.route('/util/initband')
 def initband():
     cb = band_init()
     if cb == 'ok':
@@ -14,7 +16,7 @@ def initband():
         return responseto(213)
 
 
-@util.route('/util/reset')
+@bluetooth_bp.route('/util/reset')
 def reset():
     cb = reset_bluetooth()
     if cb == '':

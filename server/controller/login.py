@@ -5,7 +5,7 @@ import cv2
 import time
 import face_recognition
 
-from utils.config import config
+from ..util import config
 
 dataset_dir = config['global']['dataset']
 model_dir = config['global']['model']
