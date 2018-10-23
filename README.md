@@ -1,43 +1,55 @@
 # 魔镜后端服务器
 
 ```
-|____app.py     运行服务器
-|____config.ini 配置文件
-|____cache      一些数据的缓存
-|____core       核心功能文件夹
-| |______init__.py
-| |____login.py 登录 / 人脸识别
-| |____register.py 注册 / 人脸模型训练
-|____dataset    数据集
-| |____haarcascade_frontalface_default.xml 数据集
-| |____train    人脸图片
-|____extensions 扩展功能
-| |____heart_utils      获取心率要用到的代码（python2）  
-| |____weather_utils    获取天气信息需要用的代码
-| |____weight_utils     获取体重要用到的代码（python2）
-| |____heartrate.py     获取心率
-| |____humidity.py      获取湿度
-| |____news.py          获取新闻
-| |____pm25.py          获取PM2.5
-| |____temperature.py   获取温度
-| |____traveladvice.py  出行建议
-| |____weather.py       获取天气
-| |____weight.py        获取体重
-| |____wind.py          获取风力
-|____route      服务器路由文件夹
-| |____auth_route.py    身份认证路由 / 登录注册
-| |____extension_route.py   扩展功能路由 / 温度湿度
-|____utils      一些可能会用到的功能性函数
-| |______init__.py
-| |____cache.py     缓存数据功能
-| |____config.py    读取数据功能
-| |____resp.py      创造请求功能
+├── app.py 
+├── cache   缓存一些数据
+├── config.ini  配置文件
+├── dataset 数据集文件夹
+│   ├── haarcascade_frontalface_default.xml 人脸识别数据集
+│   ├── model   保存训练好的人脸模型
+│   ├── train   保存训练时候的临时图片
+├── README.md   就是你现在看到的这个
+└── server      app的主要代码
+    ├── auth    用户认证的blueprint
+    │   ├── __init__.py
+    │   └── views.py 
+    ├── bluetooth   蓝牙相关功能的blueprint
+    │   ├── __init__.py
+    │   └── views.py
+    ├── controller  控制器，主要功能的实现逻辑
+    │   ├── heartrate.py    获取心率
+    │   ├── heart_utils 获取心率相关的文件（Python2）
+    │   │   ├── base.py
+    │   │   ├── constants.py
+    │   │   └── get_heart_rate.py
+    │   ├── humidity.py 获取湿度
+    │   ├── __init__.py 
+    │   ├── login.py    登录
+    │   ├── news.py 获取新闻
+    │   ├── pm25.py 获取pm2.5
+    │   ├── register.py 注册
+    │   ├── temperature.py  获取温度
+    │   ├── traveladvice.py 获取出行建议
+    │   ├── weather.py  获取天气
+    │   ├── weather_utils   获取天气相关的代码
+    │   │   ├── fetch.py
+    │   │   ├── __init__.py
+    │   │   ├── match.py
+    │   │   └── save.py
+    │   ├── weight.py   获取重量
+    │   ├── weight_utils    获取重量相关的文件
+    │   │   ├── blescan.py
+    │   │   └── main.py
+    │   └── wind.py 获取风力
+    ├── database.sqlite3    数据
+    ├── extensions  扩展功能的blueprint
+    │   ├── __init__.py
+    │   └── views.py
+    ├── __init__.py 使用工厂模式构建app的文件
+    ├── models.py   数据模型
+    └── util    一些实用性的函数
+        ├── cache.py    缓存装饰器
+        ├── config.py   读取配置的代码
+        ├── __init__.py
+        └── resp.py 生成response的代码
 ```
-
-
-- Todo
-    - [ ] 多线程优化人脸识别
-    - [x] API文档
-    - [x] 增加规范注释
-    - [x] 体重接口
-    - [x] 心率接口

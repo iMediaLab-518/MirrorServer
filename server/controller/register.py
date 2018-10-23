@@ -19,7 +19,7 @@ train_dir = os.path.join(dataset_dir, 'train')
 model_dir = config['global']['model']
 # 读取所有配置
 
-VIDEO_TIME = 10  # VIDEO_TIME是之后的语音提示语的长度，会进行这么长时间的面部录入
+VIDEO_TIME = 5  # VIDEO_TIME是之后的语音提示语的长度，会进行这么长时间的面部录入
 
 
 def image_files_in_folder(folder):

@@ -1,16 +1,28 @@
 from ..controller.register import register
 from ..controller.login import login
 from ..util import responseto
-
-from flask import Blueprint
+from ..models import User, db
+from flask import Blueprint, render_template, request
 
 auth_bp = Blueprint('auth', __name__)
 
 
-@auth_bp.route('/register/<username>')
-def Register(username):
+@auth_bp.route('/register', methods=['GET', 'POST'])
+def Register():
     try:
-        register(username)
+        name = request.form['name']
+        year = int(request.form['year'])
+        gender = request.form['gender']
+        height = int(request.form['height'])
+        register(name)
+        user = User(
+            name=name,
+            year=year,
+            gender=gender,
+            height=height
+        )
+        db.session.add(user)
+        db.session.commit()
         return responseto(100)
     except:
         return responseto(201)
@@ -19,9 +31,10 @@ def Register(username):
 @auth_bp.route('/login')
 def Login():
     try:
-        username = login()
-        if username != []:
-            return responseto(100, username)
+        name = login()
+        if name != []:
+            user = User.query.filter_by(name=name).first()
+            return responseto(100, user.serialize())
         else:
             return responseto(301)
     except:
