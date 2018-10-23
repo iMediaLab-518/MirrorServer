@@ -37,11 +37,11 @@ def temperature():
 
 @extension.route('/heartrate')
 def heartrate():
-    try:
-        res = get_heartrate()
-        return responseto(100, res)
-    except:
-        return responseto(206)
+    # try:
+    res = get_heartrate()
+    return responseto(100, res)
+    # except:
+    #     return responseto(206)
 
 
 @extension.route('/weight')
