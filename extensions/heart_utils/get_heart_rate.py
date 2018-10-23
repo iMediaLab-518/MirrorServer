@@ -7,9 +7,12 @@ if len(sys.argv) > 2:
     band.initialize()
     print('ok')
 else:
-    band.setSecurityLevel(level="medium")
-    band.authenticate()
+    try:
+        band.setSecurityLevel(level="medium")
+        band.authenticate()
 
-    heart = band.start_raw_data_realtime().next()
-    print(heart)
-    band.disconnect()
+        heart = band.start_raw_data_realtime().next()
+        print(heart)
+        band.disconnect()
+    except:
+        print('error')
