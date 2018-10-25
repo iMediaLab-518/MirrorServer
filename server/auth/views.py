@@ -2,7 +2,7 @@ from ..controller.register import register
 from ..controller.login import login
 from ..util import responseto
 from ..models import User, db
-from flask import Blueprint, render_template, request
+from flask import Blueprint, request, session
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -34,8 +34,15 @@ def Login():
         name = login()
         if name != []:
             user = User.query.filter_by(name=name).first()
+            session['name'] = name
             return responseto(100, user.serialize())
         else:
             return responseto(301)
     except:
         return responseto(302)
+
+
+@auth_bp.route('/logout')
+def Logout():
+    session.pop('name')
+    return responseto(100)

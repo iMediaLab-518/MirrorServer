@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, session
 
 from ..controller.humidity import get_humidity
 from ..controller.temperature import get_temperature
@@ -8,10 +8,13 @@ from ..controller.weight import get_weight
 from ..controller.traveladvice import get_travel_advice
 from ..controller.news import get_news
 from ..controller.pm25 import get_pm25
-import random
-
 from ..controller.wind import get_wind
+
+import random
+from datetime import datetime
+
 from ..util import responseto
+from ..models import db, Heartrate, Weight
 
 extension_bp = Blueprint('extension', __name__)
 
@@ -40,6 +43,9 @@ def heartrate():
     try:
         res = get_heartrate()
         if res != 'error':
+            heartrate = Heartrate(time=datetime.now(), heartrate=res)
+            db.session.add(heartrate)
+            db.session.commit()
             return responseto(100, res)
         else:
             return responseto(206)
@@ -47,10 +53,22 @@ def heartrate():
         return responseto(206)
 
 
+@extension_bp.route('/clear_heart')
+def clear_heart():
+    Heartrate.query.delete()
+    db.session.commit()
+    return responseto(100)
+
+
 @extension_bp.route('/weight')
 def weight():
     try:
         res = get_weight()
+        name = session['name']
+        w = float(res.split(' ')[0])
+        weight = Weight(name=name, weight=w, date=datetime.now())
+        db.session.add(weight)
+        db.session.commit()
         return responseto(100, res)
     except:
         return responseto(205)

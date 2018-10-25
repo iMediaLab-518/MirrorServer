@@ -19,7 +19,7 @@ train_dir = os.path.join(dataset_dir, 'train')
 model_dir = config['global']['model']
 # 读取所有配置
 
-VIDEO_TIME = 5  # VIDEO_TIME是之后的语音提示语的长度，会进行这么长时间的面部录入
+VIDEO_TIME = 8  # VIDEO_TIME是之后的语音提示语的长度，会进行这么长时间的面部录入
 
 
 def image_files_in_folder(folder):
@@ -87,6 +87,7 @@ def register(person):
     # 图片保存的路径
 
     total = len(os.listdir(person_dir))
+    current = 0
 
     start = time.time()
     detector = cv2.CascadeClassifier(cascade_path)
@@ -95,7 +96,7 @@ def register(person):
     print("Initlize the camera with {} s".format(time.time() - start))
     start = time.time()
 
-    while True:
+    while current < 5:
         if time.time() - start >= VIDEO_TIME:
             break
         frame = vs.read()
@@ -131,6 +132,7 @@ def register(person):
         # cv2.imshow("Frame", frame)
         # key = cv2.waitKey(1) & 0xFF
         # Wait for press
+        time.sleep(1.5)
 
     if not os.path.exists(train_dir):
         os.mkdir(train_dir)
