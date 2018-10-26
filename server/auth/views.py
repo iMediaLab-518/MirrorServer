@@ -2,7 +2,7 @@ from ..controller.register import register
 from ..controller.login import login
 from ..util import responseto
 from ..models import User, db
-from flask import Blueprint, request, session, current_app
+from flask import Blueprint, request, current_app
 
 auth_bp = Blueprint('auth', __name__)
 

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import Blueprint, session, current_app
+from flask import Blueprint, current_app
 from sqlalchemy import func
 
 from ..models import *
