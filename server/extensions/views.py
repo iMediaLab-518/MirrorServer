@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session
+from flask import Blueprint, request, session, current_app
 
 from ..controller.humidity import get_humidity
 from ..controller.temperature import get_temperature
@@ -56,7 +56,7 @@ def heartrate():
 def weight():
     try:
         res = get_weight()
-        user = session['user']
+        user = current_app.user
         name = user.name
         w = float(res.split(' ')[0])
         weight = Weight(name=name, weight=w, date=date.today())

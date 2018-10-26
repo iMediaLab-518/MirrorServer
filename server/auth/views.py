@@ -36,7 +36,7 @@ def Login():
         name = login()
         if name != []:
             user = User.query.filter_by(name=name).first()
-            session['user'] = user
+            current_app.user = user
             return responseto(100, user.serialize())
         else:
             return responseto(301)
@@ -46,5 +46,5 @@ def Login():
 
 @auth_bp.route('/logout')
 def Logout():
-    session.pop('user')
+    current_app.user = None
     return responseto(100)
