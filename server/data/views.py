@@ -2,17 +2,16 @@ from flask import Blueprint, session, request
 from ..util import responseto
 from ..models import *
 from sqlalchemy import func
-from datetime import date, datetime
+from datetime import date
 
 data_bp = Blueprint("data", __name__)
 
 
 @data_bp.route('/data/BMI')
 def bmi():
-    name = session['name']
-    user = User.query.filter(User.name == name).first()
+    user = session['user']
     height = user.height
-    w = Weight.query.filter(Weight.name == name).order_by(Weight.date.desc()).first().weight
+    w = Weight.query.filter(Weight.name == user.name).order_by(Weight.date.desc()).first().weight
     return responseto(100, w / height * 100 / height * 100)
 
 
@@ -37,32 +36,26 @@ def clear_heartrate():
 
 @data_bp.route('/data/MH2')
 def MH2():
-    name = session['name']
-    user = User.query.filter(User.name == name).first()
-    age = date.today().year - user.year
-    mh1 = (205.8 - 0.685 * age) * 0.6
-    return responseto(100, mh1)
+    user = session['user']
+    return responseto(100, user.MH2)
 
 
 @data_bp.route('/data/MH1')
 def MH1():
-    name = session['name']
-    user = User.query.filter(User.name == name).first()
-    age = date.today().year - user.year
-    mh1 = (205.8 - 0.685 * age) * 0.5
-    return responseto(100, mh1)
+    user = session['user']
+    return responseto(100, user.MH1)
 
 
 @data_bp.route('/data/weight')
 def get_weight():
     text = request.args['text']
-    name = session['name']
+    user = session['user']
+    name = user.name
     weight = Weight.query.filter(Weight.name == name and Weight.date == text).first().weight
     return responseto(100, weight)
 
 
 @data_bp.route('/data/height')
 def get_height():
-    name = session['name']
-    user = User.query.filter(User.name == name).first()
+    user = session['user']
     return responseto(100, user.height)

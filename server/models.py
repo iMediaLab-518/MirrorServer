@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from datetime import date
 
 db = SQLAlchemy()
 
@@ -12,6 +13,18 @@ class User(db.Model):
 
     def serialize(self):
         return [self.name, self.gender, self.year, self.height]
+
+    @property
+    def age(self):
+        return date.today().year - self.year
+
+    @property
+    def MH1(self):
+        return (205.8 - 0.685 * self.age) * 0.7
+
+    @property
+    def MH2(self):
+        return (205.8 - 0.685 * self.age) * 0.6
 
 
 class Weight(db.Model):
@@ -37,6 +50,13 @@ class Video(db.Model):
     strength_male = db.Column(db.Float)
     strength_female = db.Column(db.Float)
     length = db.Column(db.Integer)
+
+    def serialize(self, male):
+        if male:
+            strength = self.strength_male
+        else:
+            strength = self.strength_female
+        return [self.id, self.title, self.level, strength, self.length]
 
 
 class Record(db.Model):

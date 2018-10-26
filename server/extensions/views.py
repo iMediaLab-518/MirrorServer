@@ -56,7 +56,8 @@ def heartrate():
 def weight():
     try:
         res = get_weight()
-        name = session['name']
+        user = session['user']
+        name = user.name
         w = float(res.split(' ')[0])
         weight = Weight(name=name, weight=w, date=date.today())
         Weight.query.filter(Weight.date == date.today()).delete()
