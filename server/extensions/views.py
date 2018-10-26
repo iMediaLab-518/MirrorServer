@@ -11,7 +11,7 @@ from ..controller.pm25 import get_pm25
 from ..controller.wind import get_wind
 
 import random
-from datetime import datetime
+from datetime import date, datetime
 
 from ..util import responseto
 from ..models import db, Heartrate, Weight
@@ -25,7 +25,6 @@ def humidity():
         res = get_humidity()
         return responseto(100, res)
     except:
-
         return responseto(204)
 
 
@@ -42,7 +41,7 @@ def temperature():
 def heartrate():
     try:
         res = get_heartrate()
-        if res != 'error':
+        if res != 'error' and res.strip():
             heartrate = Heartrate(time=datetime.now(), heartrate=res)
             db.session.add(heartrate)
             db.session.commit()
@@ -53,20 +52,14 @@ def heartrate():
         return responseto(206)
 
 
-@extension_bp.route('/clear_heart')
-def clear_heart():
-    Heartrate.query.delete()
-    db.session.commit()
-    return responseto(100)
-
-
 @extension_bp.route('/weight')
 def weight():
     try:
         res = get_weight()
         name = session['name']
         w = float(res.split(' ')[0])
-        weight = Weight(name=name, weight=w, date=datetime.now())
+        weight = Weight(name=name, weight=w, date=date.today())
+        Weight.query.filter(Weight.date == date.today()).delete()
         db.session.add(weight)
         db.session.commit()
         return responseto(100, res)

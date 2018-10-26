@@ -1,7 +1,7 @@
 from ..controller.register import register
 from ..controller.login import login
 from ..util import responseto
-from ..models import User, db
+from ..models import User, db, Heartrate
 from flask import Blueprint, request, session
 
 auth_bp = Blueprint('auth', __name__)

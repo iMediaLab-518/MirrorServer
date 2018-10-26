@@ -3,6 +3,7 @@ from flask_session import Session
 from .auth import auth_bp
 from .extensions import extension_bp
 from .bluetooth import bluetooth_bp
+from .data import data_bp
 from .models import db, User
 
 app = Flask(__name__)
@@ -12,6 +13,7 @@ def init_app(app):
     app.register_blueprint(auth_bp)
     app.register_blueprint(extension_bp)
     app.register_blueprint(bluetooth_bp)
+    app.register_blueprint(data_bp)
 
     app.config['secret_key'] = b'_5#y2L"F4Q8z\n\xec]/'
 

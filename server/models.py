@@ -1,5 +1,4 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -20,7 +19,7 @@ class Weight(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String)
     weight = db.Column(db.Float)
-    date = db.Column(db.DateTime)
+    date = db.Column(db.Date)
 
 
 class Heartrate(db.Model):
