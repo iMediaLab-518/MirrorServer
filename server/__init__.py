@@ -1,7 +1,6 @@
 from queue import Queue
 
 from flask import Flask
-from flask_session import Session
 from .auth import auth_bp
 from .extensions import extension_bp
 from .bluetooth import bluetooth_bp

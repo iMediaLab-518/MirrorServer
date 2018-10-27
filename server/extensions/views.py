@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session, current_app
+from flask import Blueprint, request, current_app
 
 from ..controller.humidity import get_humidity
 from ..controller.temperature import get_temperature
@@ -37,19 +37,20 @@ def temperature():
         return responseto(203)
 
 
-@extension_bp.route('/heartrate')
+@extension_bp.route('/heartrate', methods=['GET', 'POST'])
 def heartrate():
-    try:
-        res = get_heartrate()
-        if res != 'error' and res.strip():
-            heartrate = Heartrate(time=datetime.now(), heartrate=res)
-            db.session.add(heartrate)
-            db.session.commit()
-            return responseto(100, res)
-        else:
+    if request.method == 'GET':
+        try:
+            res = Heartrate.query.order_by(Heartrate.time.desc()).first()
+            return responseto(100, res.heartrate)
+        except:
             return responseto(206)
-    except:
-        return responseto(206)
+    elif request.method == 'POST':
+        h = request.form['heartrate']
+        h = Heartrate(time=datetime.now(), heartrate=h)
+        db.session.add(h)
+        db.session.commit()
+        return responseto(100)
 
 
 @extension_bp.route('/weight')
