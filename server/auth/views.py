@@ -14,7 +14,6 @@ def Register():
         year = int(request.form['year'])
         gender = request.form['gender']
         height = int(request.form['height'])
-        current_app.message.put('register')
         register(name)
         user = User(
             name=name,
@@ -32,7 +31,6 @@ def Register():
 @auth_bp.route('/login')
 def Login():
     try:
-        current_app.message.put('login')
         name = login()
         if name != []:
             user = User.query.filter_by(name=name).first()

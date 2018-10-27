@@ -2,7 +2,6 @@ from flask import Blueprint, request, current_app
 
 from ..controller.humidity import get_humidity
 from ..controller.temperature import get_temperature
-from ..controller.heartrate import get_heartrate
 from ..controller.weather import get_weather
 from ..controller.weight import get_weight
 from ..controller.traveladvice import get_travel_advice
