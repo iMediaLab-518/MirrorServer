@@ -42,6 +42,11 @@ def Login():
         return responseto(302)
 
 
+@auth_bp.route('/user')
+def get_user():
+    return responseto(100, current_app.user.serialize())
+
+
 @auth_bp.route('/logout')
 def Logout():
     current_app.user = None

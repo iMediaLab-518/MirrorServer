@@ -28,6 +28,7 @@ def init_app(app):
 
     app.message = Queue()
     app.user = None
+    app.messages={}
 
     db.init_app(app)
     db.create_all(app=app)
