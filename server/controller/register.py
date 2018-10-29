@@ -1,6 +1,7 @@
 import math
 import pickle
 import re
+import shutil
 
 from imutils.video import VideoStream
 import imutils
@@ -85,7 +86,7 @@ def register(person):
     if not os.path.exists(train_dir):
         os.mkdir(train_dir)
 
-    person_dir = '{train_dir}/{person}'.format(train_dir=train_dir, person=person)
+    person_dir = '{train_dir}/tmp'.format(train_dir=train_dir)
     if not os.path.exists(person_dir):
         os.mkdir(person_dir)
     # 图片保存的路径
@@ -148,6 +149,8 @@ def register(person):
     train(person_dir, model_save_path=os.path.join(model_dir, "{}.clf".format(model_count)), n_neighbors=2)
 
     print("[INFO] Train complete with {} s".format(time.time() - start))
+
+    shutil.rmtree(person_dir)  # 递归删除文件夹
 
     cv2.destroyAllWindows()
     vs.stop()
