@@ -6,7 +6,8 @@ db = SQLAlchemy()
 
 class User(db.Model):
     __tablename__ = 'user'
-    name = db.Column(db.String, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String)
     gender = db.Column(db.String, nullable=False)
     year = db.Column(db.Integer, nullable=False)
     height = db.Column(db.Integer, nullable=False)

@@ -31,9 +31,9 @@ def Register():
 @auth_bp.route('/login')
 def Login():
     try:
-        name = login()
-        if name != []:
-            user = User.query.filter_by(name=name).first()
+        user_id = login()
+        if user_id != []:
+            user = User.query.filter_by(id=user_id).first()
             current_app.user = user
             return responseto(100, user.serialize())
         else:

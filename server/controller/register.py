@@ -12,6 +12,7 @@ import time
 from sklearn import neighbors
 import face_recognition
 from ..util import config
+from ..models import User
 
 cascade_path = config['global']['cascade']
 dataset_dir = config['global']['dataset']
@@ -81,6 +82,9 @@ def register(person):
     开始录入人脸，保存在person文件夹下
     :param person: 人物名称
     """
+    if not os.path.exists(train_dir):
+        os.mkdir(train_dir)
+
     person_dir = '{train_dir}/{person}'.format(train_dir=train_dir, person=person)
     if not os.path.exists(person_dir):
         os.mkdir(person_dir)
@@ -139,7 +143,10 @@ def register(person):
 
     start = time.time()
     print("[INFO] Start training the pictures!")
-    train(person_dir, model_save_path=os.path.join(model_dir, "{}.clf".format(person)), n_neighbors=2)
+    # train(person_dir, model_save_path=os.path.join(model_dir, "{}.clf".format(person)), n_neighbors=2)
+    model_count = User.query.count() + 1
+    train(person_dir, model_save_path=os.path.join(model_dir, "{}.clf".format(model_count)), n_neighbors=2)
+
     print("[INFO] Train complete with {} s".format(time.time() - start))
 
     cv2.destroyAllWindows()

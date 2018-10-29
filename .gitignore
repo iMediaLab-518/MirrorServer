@@ -5,5 +5,4 @@ __pycache__
 /dataset/train/*
 *.png
 *.clf
-*.sqlite3
 bakeup/*

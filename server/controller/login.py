@@ -64,7 +64,7 @@ def predict(X_img_path, distance_threshold=0.4):
 
     :param X_img_path: 要预测的图片路径
     :param distance_threshold: 要识别的KNN算法中的最短距离，越小越严格
-    :return:
+    :return: 模型文件名，模型的文件名为user表中的id
     """
     X_img = face_recognition.load_image_file(X_img_path)
     X_face_locations = face_recognition.face_locations(X_img)  # 加载每一张脸的位置
@@ -113,8 +113,8 @@ def take_a_photo():
 def login():
     """
 
-    :return: 用户名
+    :return: 用户在表中的id
     """
     pic_path = take_a_photo()
-    username = predict(pic_path)
-    return username
+    user_id = predict(pic_path)
+    return user_id
