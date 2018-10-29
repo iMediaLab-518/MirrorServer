@@ -58,9 +58,9 @@ def sport_times():
 @sport_bp.route('/sport/calorie')
 def calorie():
     user = current_app.user
-    record = Record.query.filter(Record.name == user.name).sort_by(Record.time.desc()).first()
+    record = Record.query.filter(Record.name == user.name).order_by(Record.time.desc()).first()
     video = Video.query.filter(Video.id == record.v_id).first()
-    weight = Weight.query.filter(Weight.name == user.name).sort_by(Weight.date.desc()).first()
+    weight = Weight.query.filter(Weight.name == user.name).order_by(Weight.date.desc()).first()
 
     w = weight.weight
     length = video.length
