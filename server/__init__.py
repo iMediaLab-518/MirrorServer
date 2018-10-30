@@ -9,8 +9,6 @@ from .sport import sport_bp
 from .message import message_bp
 from .models import db, User
 
-app = Flask(__name__)
-
 
 def init_app(app):
     app.register_blueprint(auth_bp)
@@ -28,11 +26,12 @@ def init_app(app):
 
     app.message = Queue()
     app.user = None
-    app.messages={}
+    app.messages = {}
 
     db.init_app(app)
     db.create_all(app=app)
     return app
 
 
+app = Flask(__name__)
 app = init_app(app)
