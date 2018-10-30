@@ -46,6 +46,9 @@ def heartrate():
             return responseto(206)
     elif request.method == 'POST':
         h = request.form['heartrate']
+        h = int(h)
+        if h < 0:
+            h += 256
         h = Heartrate(time=datetime.now(), heartrate=h)
         db.session.add(h)
         db.session.commit()
