@@ -3,8 +3,10 @@ from ..controller.login import login
 from ..util import responseto
 from ..models import User, db
 from flask import Blueprint, request, current_app
+from threading import Lock
 
 auth_bp = Blueprint('auth', __name__)
+lock = Lock()
 
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
@@ -14,7 +16,8 @@ def Register():
         year = int(request.form['year'])
         gender = request.form['gender']
         height = int(request.form['height'])
-        register(name)
+        with lock:
+            register(name)
         user = User(
             name=name,
             year=year,
@@ -31,7 +34,8 @@ def Register():
 @auth_bp.route('/login')
 def Login():
     try:
-        user_id = login()
+        with lock:
+            user_id = login()
         if user_id != []:
             user = User.query.filter_by(id=user_id).first()
             current_app.user = user
